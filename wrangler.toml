@@ -1,0 +1,14 @@
+name = "snehulak-dev"           # Název vašeho Workeru
+compatibility_date = "2024-09-19"
+
+[assets]
+directory = "./output"
+html_handling = "drop-trailing-slash"
+
+[vars]
+ENVIRONMENT = "production"
+
+[previews.vars]
+ENVIRONMENT = "preview"
+
+

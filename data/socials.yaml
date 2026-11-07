@@ -1,0 +1,132 @@
+fall_over:
+  folow_me:
+    cs: sleduj mě na
+    en: folow me at
+
+
+socials:
+  - name: YouTube
+    link: 'https://youtube.com/@snehulaktv'
+    icon: youtube
+    tags: [main, cc]
+    trans:
+      cs: YouTube
+      en: YouTube
+    meta:
+      description: 
+        cs: "Někdy nové video"
+        en: "Some times new video" 
+
+  - name: Twitch
+    link: 'https://www.twitch.tv/codesnehulak'
+    icon: twitch
+    tags: [main, cc]
+    trans:
+      cs: Twitch
+      en: Twitch
+    meta:
+      description: 
+        cs: "Nejsem živě"
+        en: "Not Live"
+
+  - name: X (Twitter)
+    link: 'https://x.com/SnehulakTV'
+    icon: x
+    tags: [cc]
+    trans:
+      cs: X (Twitter)
+      en: X (Twitter)
+
+  - name: Discord
+    link: 'https://discord.com/users/1157006510866571444'
+    icon: discord
+    tags: [cc]
+    trans:
+      cs: Discord
+      en: Discord
+
+  - name: Instagram
+    link: 'https://www.instagram.com/snehulaktv/'
+    icon: instagram
+    tags: [main, cc]
+    trans:
+      cs: Instagram
+      en: Instagram
+
+  - name: GitHub
+    link: 'https://github.com/Msnehulak'
+    icon: github
+    tags: [main, code]
+    trans:
+      cs: GitHub
+      en: GitHub
+
+  - name: LinkedIn
+    link: 'https://www.linkedin.com/in/snehulak-m-103405426/'
+    icon: linkedin
+    tags: [code]
+    trans:
+      cs: LinkedIn
+      en: LinkedIn
+
+  - name: dev.to
+    link: 'https://dev.to/snehulak'
+    icon: devdotto
+    tags: [code]
+    trans:
+      cs: dev.to
+      en: dev.to
+
+  - name: Hashnode
+    link: 'https://hashnode.com/@snehulak'
+    icon: hashnode
+    tags: [code]
+    trans:
+      cs: Hashnode
+      en: Hashnode
+
+  - name: Docker Hub
+    link: 'https://hub.docker.com/u/snehulak'
+    icon: docker
+    tags: [code, packages]
+    trans:
+      cs: Docker Hub
+      en: Docker Hub
+
+  - name: npm
+    link: 'https://www.npmjs.com/~snehulak'
+    icon: npm
+    tags: [code, packages]
+    trans:
+      cs: npm
+      en: npm
+
+  - name: crates.io
+    link: 'https://crates.io/users/Msnehulak'
+    icon: rust
+    tags: [code, packages]
+    trans:
+      cs: crates.io
+      en: crates.io
+
+  - name: PyPI
+    link: 'https://pypi.org/user/snehulak/'
+    icon: pypi
+    tags: [code, packages]
+    trans:
+      cs: PyPI
+      en: PyPI
+
+  - name: osu!
+    link: 'https://osu.ppy.sh/users/38448983'
+    icon: osu
+    tags: [main, game]
+    trans:
+      cs: osu!
+      en: osu!
+    meta:
+      description: 
+        cs: "Tuhle hru miluju"
+        en: "I love this game" 
+
+

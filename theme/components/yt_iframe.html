@@ -1,0 +1,78 @@
+{%- macro render_iframe(yt_id, md, lang="en", style="full")-%}
+  {%- if md and md.video and md.creator -%}
+    <div class="yt-video bg-dark-500 rounded-lg p-3 flex flex-col gap-0 my-8 max-w-[45rem]" data-video-id="{{ yt_id }}">
+
+      {# Video Title (Horní lišta) #}
+      <div class="px-3 text-left">
+        <h2 class="text-xl md:text-xl font-bold m-0 mt-0 mb-2 text-white">{{ md.video.title }}</h2>
+      </div>
+
+      {# Views & Release Day (Druhá lišta) #}
+      <div class="flex justify-between gap-3">
+        <div class="px-3 text-sm text-gray-300 flex-grow text-left">
+          {{ md.video.view_count or 0 }} views
+        </div>
+        <div class="px-3 text-sm text-gray-300 flex-grow text-right">
+          {{ md.video.published_at[:10] if md.video.published_at else 'Unknown date' }}
+        </div>
+      </div>
+
+      {# Thumbnail Area #}
+      <div class="relative"> {# Přidán padding pro přesah "Headphones" widgetu #}
+        <div class="yt-thumbnail-wraper relative aspect-[16/9] cursor-pointer group overflow-hidden rounded-lg bg-dark-700 flex items-center justify-center">
+          <img class="block w-full h-full object-cover m-0 mt-0 absolute inset-0 rounded-lg"
+               src="{{ md.video.thumbnails }}"
+               referrerpolicy="no-referrer"
+               alt="{{ md.video.title }}">
+
+          {# Play tlačítko uprostřed #}
+          <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition z-10">
+            <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+              <svg class="w-8 h-8 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Footer: Profile Picture & CC Info #}
+      <div class="flex mt-2">
+        {# Profile Picture #}
+        <div class="rounded-lg flex items-center justify-center w-10 h-10 shrink-0 overflow-hidden">
+          <img src="{{ md.creator.thumbnails }}" alt="{{ md.creator.title }}" class="w-full h-full object-cover">
+        </div>
+
+        {# CC Name & Subs #}
+        <div class="flex items-center px-4 gap-2">
+          <p class="font-bold mt-0 mb-0 text-xl text-white leading-none">
+            {{ md.creator.title }}
+          </p>
+          <p class="mt-0 mb-0 text-xs text-gray-400 leading-none">
+            {{ md.creator.subscriber_count or 0 }} subs
+          </p>
+        </div>
+      </div>
+
+    </div>
+  {%- else -%}
+    {# Fallback bez YouTube API: přehraje se po kliknutí přes yt_iframe.js #}
+    <div class="yt-video bg-dark-500 rounded-lg p-3 flex flex-col gap-0 my-8 max-w-[45rem]" data-video-id="{{ yt_id }}">
+      <div class="yt-thumbnail-wraper relative aspect-[16/9] cursor-pointer group overflow-hidden rounded-lg bg-dark-700 flex items-center justify-center">
+        <img class="block w-full h-full object-cover m-0 mt-0 absolute inset-0 rounded-lg"
+             src="https://i.ytimg.com/vi/{{ yt_id }}/hqdefault.jpg"
+             referrerpolicy="no-referrer"
+             alt="YouTube video {{ yt_id }}"
+             loading="lazy">
+
+        <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition z-10">
+          <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+            <svg class="w-8 h-8 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endmacro -%}

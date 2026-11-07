@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "snehulak-dev"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "minijinja",
+    "python-frontmatter",
+    "markdown",
+    "sqlmodel",
+    "jinja2",
+    "python-dotenv",
+    "google-api-python-client",
+    "diskcache-community",
+    "requests",
+    "pyyaml",
+]
+
+[tool.uv]
+package = false

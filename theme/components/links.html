@@ -1,0 +1,93 @@
+{# theme/components/links.html #}
+
+{%- macro _url(social) -%}{{- social.link or "#" -}}{%- endmacro -%}
+{%- macro _label(social, lang) -%}
+  {{- (social.trans or {}).get(lang) or social.name or "link" -}}
+{%- endmacro -%}
+{%- macro _icon(social) -%}{{- social.icon or "" -}}{%- endmacro -%}
+
+{# --- jeden odkaz ve zvoleném stylu --- #}
+{%- macro render_link(social, lang="en", style="full", all_data="") -%}
+  {%- set url   = _url(social) -%}
+  {%- set label = _label(social, lang) -%}
+  {%- set icon  = _icon(social) -%}
+
+  {%- if style == "icon" -%}
+    <a href="{{ url }}"
+       class="social-link social-link--icon inline-flex p-1 items-center justify-center w-12 h-12 rounded-lg bg-dark-500 hover:bg-dark-400 transition"
+       title="{{ label }}" aria-label="{{ label }}"
+       data-icon="{{ icon }}">
+      <img src="/static/img/icons/{{ icon }}.svg"></img>
+      <span class="social-icon" data-icon="{{ icon }}"></span>
+    </a>
+
+
+  {%- elif style == "profile" -%}
+    <a href="{{ url }}"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="group flex flex-row items-center gap-4 p-4 rounded-2xl  hover:bg-dark-400 transition duration-300 w-full not-prose overflow-hidden"
+       data-icon="{{ icon }}">
+
+      <!-- Levá část: Ikona -->
+      <div class="flex-shrink-0 w-16 h-16 flex items-center justify-center rounded-xl bg-dark-600 p-3">
+        <img src="/static/img/icons/{{ icon }}.svg" alt="{{ label }}" class="w-full h-full object-contain">
+      </div>
+
+      <!-- Pravá část: Obsah -->
+      <div class="flex-grow flex flex-col min-w-0 no-underline!">
+        <div class="font-bold text-2xl text-white">
+          {{ label }}
+        </div>
+
+        <div class="text-xs text-gray-400 truncate">
+          {{ url | replace("https://", "") | replace("http://", "") }}
+        </div>
+
+        <div class="mt-2 text-sm text-gray-300">
+          {%- if social.meta and social.meta.description -%}
+            {{ social.meta.description[lang] }}
+          {%- else -%}
+            {{all_data.fall_over.folow_me[lang]}} {{ label }}!
+          {%- endif -%}
+        </div>
+      </div>
+
+    </a>  {%- elif style == "text" -%}
+    <a href="{{ url }}"
+       class="social-link social-link--text px-3 py-2 rounded-lg hover:bg-brand-500 transition"
+       data-icon="{{ icon }}">{{ label }}</a>
+
+  {%- elif style == "pill" -%}
+    <a href="{{ url }}"
+       class="social-link social-link--pill inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-500 hover:bg-brand-500 transition"
+       data-icon="{{ icon }}">
+      <span class="social-icon" data-icon="{{ icon }}"></span>
+      <span class="social-label">{{ label }}</span>
+    </a>
+
+  {%- else -%} {# "full" = výchozí #}
+    <a href="{{ url }}"
+       class="social-link social-link--full inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-brand-500 transition"
+       data-icon="{{ icon }}">
+      <span class="social-icon" data-icon="{{ icon }}"></span>
+      <span class="social-label">{{ label }}</span>
+    </a>
+  {%- endif -%}
+{%- endmacro -%}
+
+{# --- seznam odkazů --- #}
+{%- macro render_links(socials, lang="en", style="full", all_data="") -%}
+  {# Pro profil použijeme flex-col, pro ostatní flex-wrap #}
+  {%- if style == "profile" -%}
+    {%- set wrapper_class = "grid grid-cols-[repeat(auto-fit,minmax(clamp(13rem,100%,16.5rem),1fr))] gap-4 w-full" -%}
+  {%- else -%}
+    {%- set wrapper_class = "flex flex-wrap gap-2" -%}
+  {%- endif -%}
+
+  <div class="social-links social-links--{{ style }} {{ wrapper_class }}">
+    {%- for s in socials -%}
+      {{- render_link(s, lang=lang, style=style, all_data=all_data) -}}
+    {%- endfor -%}
+  </div>
+{%- endmacro -%}

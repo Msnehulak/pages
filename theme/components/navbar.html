@@ -18,14 +18,16 @@
       <ul class="flex flex-col md:flex-row space-y-1 md:space-y-0 space-x-0 md:space-x-1 w-full md:w-auto">
 
         {% for entry in data.navbar.nav %}
-          <li><a href="{{ link(lang ~ entry.link) }}" class="block text-center hover:bg-brand-500 p-3 rounded-lg transition duration-300 ease-in-out">
+          <li><a href="{{ link(lang ~ entry.link) }}"
+                 class="block text-center hover:bg-brand-500 p-3 rounded-lg transition duration-300 ease-in-out">
             {{ entry["trans"][page.lang] }}
           </a></li>
         {% endfor %}
 
         {% for lang_ver in page.trans %}
           {% if lang_ver.lang != page.lang %}
-            <li><a href="{{ link(lang_ver.path) }}" class="block text-center hover:bg-brand-500 p-3 rounded-lg transition duration-300 ease-in-out">
+            <li><a href="{{ link(lang_ver.path) }}"
+                   class="block text-center hover:bg-brand-500 p-3 rounded-lg transition duration-300 ease-in-out">
               {{ lang_ver.lang | upper }}
             </a></li>
           {% endif %}

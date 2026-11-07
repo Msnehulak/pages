@@ -25,6 +25,10 @@ class YouTubeAPIWrapper:
             cache_name = f"yt_api_chanel_{channel_id}"
             cached = self.cache.get(cache_name, default=_MISSING)
             if cached is not _MISSING:
+                pp_download_url = cached["thumbnails_yt"]["high"]["url"]
+                pp_url = cache_manager.download_img(
+                    pp_download_url, f"yt_api_video_{channel_id}.jpeg"
+                )
                 return cached
 
             response = (
@@ -54,6 +58,7 @@ class YouTubeAPIWrapper:
                 "description": snippet.get("description"),
                 "custom_url": snippet.get("customUrl"),
                 "published_at": snippet.get("publishedAt"),
+                "thumbnails_yt": snippet.get("thumbnails"),
                 "thumbnails": pp_url,
                 "subscriber_count": statistics.get("subscriberCount"),
                 "video_count": statistics.get("videoCount"),
@@ -71,6 +76,10 @@ class YouTubeAPIWrapper:
             cache_name = f"yt_api_video_{video_id}"
             cached = self.cache.get(cache_name, default=_MISSING)
             if cached is not _MISSING:
+                pp_download_url = cached["thumbnails_yt"]["high"]["url"]
+                pp_url = cache_manager.download_img(
+                    pp_download_url, f"yt_api_video_{video_id}.jpeg"
+                )
                 return cached
 
             response = (
@@ -101,6 +110,7 @@ class YouTubeAPIWrapper:
                 "channel_id": snippet.get("channelId"),
                 "channel_title": snippet.get("channelTitle"),
                 "published_at": snippet.get("publishedAt"),
+                "thumbnails_yt": snippet.get("thumbnails"),
                 "thumbnails": thumbnail_utl,
                 "view_count": statistics.get("viewCount"),
                 "like_count": statistics.get("likeCount"),

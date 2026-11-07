@@ -1,20 +1,14 @@
-#!/usr/bin/env python3
-"""Spustí Tailwind CSS přes Node nad už postaveným output/.
-
-Instalaci Tailwindu řeší npm (`npm install`), Python jen ověří, že příkaz
-existuje, a spustí ho. Pouští se až na konci buildu, kdy je hotová output/.
-
-Použití:
-    python -m src.run_node
-    python -m src.run_node --watch
-"""
-
 from __future__ import annotations
 
 import argparse
+import logging
 import shutil
 import subprocess
 from pathlib import Path
+
+from tailwindcss_bin import apply_node_path, find_tailwindcss_bin
+
+apply_node_path()
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT_DIR / "output"
@@ -23,58 +17,40 @@ OUTPUT_CSS = OUTPUT_DIR / "assets" / "tailwind.css"
 TAILWIND_BIN = ROOT_DIR / "node_modules" / ".bin" / "tailwindcss"
 
 
-def run_tailwind(watch: bool = False) -> Path:
-    """Vygeneruje CSS z už postaveného output/ a vrátí cestu k němu."""
-    if not OUTPUT_DIR.is_dir() or not any(OUTPUT_DIR.rglob("*.html")):
-        raise SystemExit(
-            "Chyba: output/ neexistuje nebo v něm nejsou HTML soubory. "
-            "Nejdřív spusť build (python build.py)."
+class RunNode:
+    def __init__(self) -> None:
+        pass
+
+    def tailwind(
+        self,
+        inp=ROOT_DIR / "theme" / "tailwind.css",
+        out=OUTPUT_DIR / "assets" / "tailwind.css",
+    ):
+        subprocess.run(
+            [
+                find_tailwindcss_bin(),
+                "-i",
+                inp,
+                "-o",
+                out,
+                "--minify",
+            ],
+            check=True,
         )
+        logging.info(f"tailwind build is good")
 
-    if not INPUT_CSS.is_file():
-        raise SystemExit(f"Chyba: chybí vstupní CSS: {INPUT_CSS.relative_to(ROOT_DIR)}")
-
-    if shutil.which("node") is None:
-        raise SystemExit("Chyba: Node.js není v PATH. Nainstaluj ho (https://nodejs.org).")
-
-    if not TAILWIND_BIN.is_file():
-        raise SystemExit(
-            "Chyba: Tailwind není nainstalovaný.\n"
-            "Spusť v kořeni projektu: npm install"
+    def type_script(self):
+        path = f"{OUTPUT_DIR / 'assets' / 'ts'}/*.ts"
+        result = subprocess.run(
+            [
+                "npx",
+                "tsc",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
         )
-
-    OUTPUT_CSS.parent.mkdir(parents=True, exist_ok=True)
-
-    command = [
-        str(TAILWIND_BIN),
-        "--input",
-        str(INPUT_CSS),
-        "--output",
-        str(OUTPUT_CSS),
-        "--minify",
-    ]
-    if watch:
-        command.append("--watch")
-
-    print(f"[tailwind] {OUTPUT_CSS.relative_to(ROOT_DIR)}")
-    subprocess.run(command, cwd=ROOT_DIR, check=True)
-    return OUTPUT_CSS
+        logging.info("Type Script run")
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Spustí Tailwind CLI a vygeneruje CSS pro output/."
-    )
-    parser.add_argument(
-        "--watch",
-        action="store_true",
-        help="sledovat změny v output/ a přegenerovávat CSS",
-    )
-    args = parser.parse_args(argv)
-
-    run_tailwind(watch=args.watch)
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+run = RunNode()

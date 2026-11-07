@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from pathlib import Path
@@ -68,8 +69,6 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
                 }
             )
 
-        print(md_link_deps)
-
         page_variables = self.jinja2_env.parse(page_content)
         jija_dependencys = list(meta.find_undeclared_variables(page_variables))
 
@@ -112,4 +111,4 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
         with Session(self.db_engine) as session:
             session.add(page_row)
             session.commit()
-            print(f"Záznam '{slug}' úspěšně přidán!")
+            logging.info(f"Indexing as md '{slug}' is corect!")

@@ -1,4 +1,5 @@
 # cache_manager.py
+import logging
 import os
 from pathlib import Path
 
@@ -31,26 +32,27 @@ def get_cache() -> Cache:
 
 
 def download_img(url: str, name: str):
-    img = download_img_binary(url)
+    img = download_img_binary(url, name)
     path = IMG_PATH_A / name
-    save_url = f"{site_url}/{IMG_PATH}/{name}"
+    save_url = f"/{IMG_PATH}/{name}"
 
     with open(path, "wb") as f:
-        print(f"write to {path}")
+        logging.info(f"write to {path}")
         f.write(img)
 
     return save_url
 
 
-def download_img_binary(url: str):
-    cache_name = f"img_download_{url}"
+def download_img_binary(url: str, name: str):
     cache = get_cache()
-    cached = cache.get(cache_name, default=_MISSING)
+    cached = cache.get(name, default=_MISSING)
     if cached is not _MISSING:
+        logging.info(f"for '{url}' cache hit")
         return cached
 
     response = requests.get(url)
     response.raise_for_status()
 
-    cache.set(cache_name, response.content, expire=IMG_CACHE_EXPIRE)
+    cache.set(name, response.content, expire=IMG_CACHE_EXPIRE)
+    logging.info(f"download '{url}'")
     return response.content

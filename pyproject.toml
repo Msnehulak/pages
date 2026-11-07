@@ -17,6 +17,7 @@ dependencies = [
     "diskcache-community",
     "requests",
     "pyyaml",
+    "tailwindcss-bin"
 ]
 
 [tool.uv]

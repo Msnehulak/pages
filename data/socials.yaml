@@ -18,7 +18,7 @@ socials:
         en: "Some times new video" 
 
   - name: Twitch
-    link: 'https://www.twitch.tv/codesnehulak'
+    link: 'https://twitch.tv/codesnehulak'
     icon: twitch
     tags: [main, cc]
     trans:
@@ -46,7 +46,7 @@ socials:
       en: Discord
 
   - name: Instagram
-    link: 'https://www.instagram.com/snehulaktv/'
+    link: 'https://instagram.com/snehulaktv/'
     icon: instagram
     tags: [main, cc]
     trans:

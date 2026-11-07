@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 import shutil
 from pathlib import Path
@@ -11,7 +12,18 @@ DB_PATH = ROOT_DIR / "ssg.db"
 def main() -> int:
     parser = argparse.ArgumentParser(description="Postaví statický web do output/.")
     parser.add_argument("--no-cache", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--log",
+        default="WARNING",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        type=str.upper,
+        help="Nastaví úroveň logování: DEBUG, INFO, WARNING, ERROR, CRITICAL",
+    )
+    args = parser.parse_args()  # ← jen jednou
+    logging.basicConfig(
+        level=args.log,  # už je velkými písmeny díky type=str.upper
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    )
 
     # Všechny relativní cesty (ssg.db, output/, theme/static) míří do kořene
     # projektu, i když build spustíš odjinud.
@@ -23,6 +35,7 @@ def main() -> int:
         DB_PATH.unlink()
     if OUTPUT_DIR.exists():
         shutil.rmtree(OUTPUT_DIR)
+        logging.info("Remove output/ folder")
 
     from src import (
         cache_manager,
@@ -35,6 +48,7 @@ def main() -> int:
 
     if args.no_cache:
         cache_manager.get_cache().clear()
+        logging.info("Cache is empty")
 
     pages_db.init_sqlite_DB()
 
@@ -45,7 +59,8 @@ def main() -> int:
     pages_bulder.PagesBuilder().main()
 
     # Tailwind až nakonec, nad hotovým output/
-    run_node.run_tailwind()
+    run_node.run.tailwind()
+    run_node.run.type_script()
 
     src = ROOT_DIR / "theme" / "static"
     dst = OUTPUT_DIR / "static"

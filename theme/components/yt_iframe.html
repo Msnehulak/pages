@@ -3,7 +3,7 @@
     <div class="yt-video bg-dark-500 rounded-lg p-3 flex flex-col gap-0 my-8 max-w-[45rem]" data-video-id="{{ yt_id }}">
 
       {# Video Title (Horní lišta) #}
-      <div class="px-3 text-left">
+      <div class="px-0 text-left">
         <h2 class="text-xl md:text-xl font-bold m-0 mt-0 mb-2 text-white">{{ md.video.title }}</h2>
       </div>
 
@@ -37,7 +37,7 @@
       </div>
 
       {# Footer: Profile Picture & CC Info #}
-      <div class="flex mt-2">
+      <a class="flex mt-3 no-underline">
         {# Profile Picture #}
         <div class="rounded-lg flex items-center justify-center w-10 h-10 shrink-0 overflow-hidden">
           <img src="{{ md.creator.thumbnails }}" alt="{{ md.creator.title }}" class="w-full h-full object-cover">
@@ -52,7 +52,7 @@
             {{ md.creator.subscriber_count or 0 }} subs
           </p>
         </div>
-      </div>
+      </a>
 
     </div>
   {%- else -%}

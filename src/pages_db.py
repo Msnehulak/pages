@@ -1,3 +1,4 @@
+import logging
 from typing import List, Optional
 
 from sqlmodel import JSON, Column, Field, Session, SQLModel, create_engine
@@ -28,3 +29,4 @@ class Page(SQLModel, table=True):
 def init_sqlite_DB():
     engine = create_engine("sqlite:///ssg.db")
     SQLModel.metadata.create_all(engine)
+    logging.info(f"init SQLite")

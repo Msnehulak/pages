@@ -1,4 +1,5 @@
 import json
+import logging
 from functools import partial
 from pathlib import Path
 
@@ -81,7 +82,7 @@ class PagesBuilder:
         out_path = Path(page.save_as)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(html, encoding="utf-8")
-        print(f"[OK] {page.url} -> {out_path}")
+        logging.info(f"Build page {page.slug}")
 
     def load_jinja_values(self):
         variabls = {}

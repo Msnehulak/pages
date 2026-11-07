@@ -727,6 +727,7 @@ dependencies = [
     { name = "pyyaml" },
     { name = "requests" },
     { name = "sqlmodel" },
+    { name = "tailwindcss-bin" },
 ]
 
 [package.metadata]
@@ -741,6 +742,7 @@ requires-dist = [
     { name = "pyyaml" },
     { name = "requests" },
     { name = "sqlmodel" },
+    { name = "tailwindcss-bin" },
 ]
 
 [[package]]
@@ -807,6 +809,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/dd/67/b2c0b771c89c023262dd8fb6ba2cdc6a004e5ff75dd5763051b38ccd133a/sqlmodel-0.0.48.tar.gz", hash = "sha256:5582e87e845e23bb1179a7d8b11a4f5e441b4494528a41ee2fe1d129ffe91543", size = 99329 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4b/76/6f8221eda15f28471c3887e5a75a62cd7338d20ac03e1e78a110a127d61e/sqlmodel-0.0.48-py3-none-any.whl", hash = "sha256:8d389bf735b03a17508e93e888c13a30ef1ddca22dd8e57add12317401e4112e", size = 31468 },
+]
+
+[[package]]
+name = "tailwindcss-bin"
+version = "4.3.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/44/61/d81ac86d9b3b789431acb7fa4674fcfe2d4345487738e7297af60ed37be2/tailwindcss_bin-4.3.3.tar.gz", hash = "sha256:0b22bd9e793ddbcb8f3f1ed114a754cb7c989a13c417fee38c259c3900ef1bc4", size = 12914 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b0/54/de1a1bfed9ee448b2dbe39107ef28fbf4efbd61056ba7328895eeeb89cb7/tailwindcss_bin-4.3.3-py3-none-macosx_13_0_arm64.whl", hash = "sha256:79d498d54ffb6c5773c3631643a40a90522d9af23b132fd580b3e679a429ac4b", size = 30203751 },
+    { url = "https://files.pythonhosted.org/packages/06/fd/bfd0f6c8f396f2a17c486e2ad8acf94a7e8c9387846426528292f37f4f62/tailwindcss_bin-4.3.3-py3-none-macosx_13_0_x86_64.whl", hash = "sha256:6696ec85b5a051c8a62161d24b11a5e9ffd7219f4d4b3f4ed0eff0a655630af1", size = 31918033 },
+    { url = "https://files.pythonhosted.org/packages/8f/c7/ab9c71bf333acb94689655f9274bfc9f2701d0de4d34886d682008d97903/tailwindcss_bin-4.3.3-py3-none-manylinux_2_24_aarch64.whl", hash = "sha256:9f90a7f4f014004912320c701779135893f05338367d41b681abb26c2d7fea98", size = 41920652 },
+    { url = "https://files.pythonhosted.org/packages/2e/50/4a5699239387d8df9bf70221e831cff8957165ffb786af9412bbd883eb6d/tailwindcss_bin-4.3.3-py3-none-manylinux_2_24_x86_64.whl", hash = "sha256:fc7a3bffd89c4e181c37b4b0bf4e33b8b985e324b2207af1aa73be287232f516", size = 42295178 },
+    { url = "https://files.pythonhosted.org/packages/a7/23/0ac23d0e40f4f9a11df73bf4919508bb33918875c173e811c772472087db/tailwindcss_bin-4.3.3-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:484a6e017f8c9efa90e2fb78a31aaa25c701c16458b9b1c389f76d320a00f7fe", size = 40527158 },
+    { url = "https://files.pythonhosted.org/packages/c4/71/76627a144ca6aa9e10b79b91e64651b479d67f43b176e5bf8aa35baa00c6/tailwindcss_bin-4.3.3-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:5db7989085f832731cfcebf1c7243be109e6fee9944fbfb89e1ca97ddd22c5ef", size = 41075907 },
+    { url = "https://files.pythonhosted.org/packages/d8/ab/9f6746364984c0920d8115e8bfe87befc2af25e6161d4714ca22e7644ce4/tailwindcss_bin-4.3.3-py3-none-win_amd64.whl", hash = "sha256:93ad0aabf94496dfa2d50f001e5410f812e65003d653d590c3c32436ec81d7b3", size = 44840056 },
 ]
 
 [[package]]

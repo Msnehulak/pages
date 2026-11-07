@@ -89,7 +89,10 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
             page_path = f"{path_lang}{slug}/"
 
         page_save_as = output_dir / page_path / "index.html"
-        page_url = f"{site_url}/{page_path}"
+        if page_path == "":
+            page_url = f"{site_url}"
+        else:
+            page_url = f"{site_url}/{page_path}"
 
         page_id = f"{lang}{slug}"
 

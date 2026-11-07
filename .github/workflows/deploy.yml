@@ -10,6 +10,7 @@ on:
       - '.env.example'
       - '.gitignore'
       - '.gitattributes'
+  workflow_dispatch:
 
 permissions:
   contents: read

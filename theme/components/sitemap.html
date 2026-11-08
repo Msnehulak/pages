@@ -1,0 +1,18 @@
+{%- macro render_sitemap(pages) -%}
+  <?xml version="1.0" encoding="utf-8"?>
+  <?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+          xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+    {% for page in pages %}
+      <url>
+        <loc>{{page.url}}</loc>
+        {% for ver in page.lang_versions %}
+        {# {{ ver.lang }} {{ ver.path }} {{ver.url}} #}
+          <xhtml:link rel="alternate" hreflang="{{ ver.lang }}" href="{{ ver.url }}"/>
+        {% endfor %}
+      </url>
+    {% endfor %}
+
+  </urlset>
+{%- endmacro -%}

@@ -39,6 +39,7 @@ def main() -> int:
 
     from src import (
         cache_manager,
+        create_sitemap,
         index_content,
         mearge_page,
         pages_bulder,
@@ -56,9 +57,10 @@ def main() -> int:
 
     mearge_page.link_language_versions()
 
+    create_sitemap.generate_sitemap()
+
     pages_bulder.PagesBuilder().main()
 
-    # Tailwind až nakonec, nad hotovým output/
     run_node.run.tailwind()
     run_node.run.type_script()
 

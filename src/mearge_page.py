@@ -2,7 +2,9 @@ import logging
 
 from sqlmodel import Session, create_engine, select
 
-from . import pages_db
+from . import pages_db, utility
+
+site_url = utility.get_siteurl()
 
 
 def link_language_versions():
@@ -20,7 +22,14 @@ def link_language_versions():
         for group in slug_groups.values():
             lang_map = []
             for x in group:
-                lang_map.append({"lang": x.lang, "path": x.path})
+                lang_url = f"{site_url}/{x.path}"
+                lang_map.append(
+                    {
+                        "lang": x.lang,
+                        "path": x.path,
+                        "url": lang_url,
+                    }
+                )
 
             for page in group:
                 page.lang_versions = lang_map

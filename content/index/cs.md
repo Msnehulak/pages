@@ -8,6 +8,10 @@ save_as: index
 
 # Vítejte na mém novém webu!
 
+{{ tools.links("main", style="profile") }}
+
+{{ page.create_at }}
+
 Tento text je napsaný v **Markdownu** a automaticky se převede na HTML.
 
 {{ tools.links("all", style="icon") }}

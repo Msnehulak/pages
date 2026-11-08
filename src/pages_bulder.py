@@ -45,13 +45,7 @@ class PagesBuilder:
     def build_page(self, page: pages_db.Page):
         # jv = jinja variabls
         jv_global = {
-            "page": {
-                "title": page.title,
-                "description": page.description,
-                "url": page.url,
-                "lang": page.lang,
-                "trans": page.lang_versions,
-            },
+            "page": page,
             "link": self.clear_link,
         }
         jv_page = {

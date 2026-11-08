@@ -8,6 +8,8 @@ save_as: index
 
 # Welcome to my new website!
 
+{{ tools.links("main", style="profile") }}
+
 This text is written in **Markdown** and will be automatically converted to HTML.
 
 {{ yt.video(yt_id="HcYcGnUMbKQ")}}

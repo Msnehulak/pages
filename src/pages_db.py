@@ -14,6 +14,8 @@ class Page(SQLModel, table=True):
 
     title: str = Field(default="No Title")
     description: str = Field(default="No Description")
+    create_at: str = Field(default="")
+    last_update: str = Field(default="")
 
     tags: List[str] = Field(default=[], sa_column=Column(JSON))
     lang_versions: dict = Field(default={}, sa_column=Column(JSON))

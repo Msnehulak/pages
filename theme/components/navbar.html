@@ -24,7 +24,7 @@
           </a></li>
         {% endfor %}
 
-        {% for lang_ver in page.trans %}
+        {% for lang_ver in page.lang_versions %}
           {% if lang_ver.lang != page.lang %}
             <li><a href="{{ link(lang_ver.path) }}"
                    class="block text-center hover:bg-brand-500 p-3 rounded-lg transition duration-300 ease-in-out">

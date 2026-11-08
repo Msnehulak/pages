@@ -1,6 +1,8 @@
 import logging
 import os
 import re
+import subprocess
+from datetime import datetime
 from pathlib import Path
 
 import frontmatter
@@ -42,12 +44,7 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
 
         print(content_list)
 
-    def index_mark_down(self, path: Path):
-        page = frontmatter.load(path)
-        page_content = page.content
-
-        html_content = markdown.markdown(page.content)
-
+    def markdown_dependencies(self, page_content):
         md_source_deps = []
         md_source_deps_list = re.findall(REGEX["source"], page_content)
         for dep in md_source_deps_list:
@@ -68,6 +65,34 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
                     "text": dep[0],
                 }
             )
+
+        return md_link_deps, md_source_deps
+
+    @staticmethod
+    def get_git_file_dates(file_path):
+        cmd_created = [
+            "git",
+            "log",
+            "--follow",
+            "--format=%at",
+            "--",
+            file_path,
+        ]
+
+        res_created = subprocess.run(cmd_created, capture_output=True, text=True)
+        time_stamps = res_created.stdout.splitlines()
+
+        create_at = datetime.fromtimestamp(int(time_stamps[-1])).strftime("%Y %m.%d")
+        last_update = datetime.fromtimestamp(int(time_stamps[0])).strftime("%Y %m.%d")
+
+        return create_at, last_update
+
+    def index_mark_down(self, path: Path):
+        page = frontmatter.load(path)
+        page_content = page.content
+
+        md_link_deps, md_source_deps = self.markdown_dependencies(page_content)
+        html_content = markdown.markdown(page.content)
 
         page_variables = self.jinja2_env.parse(page_content)
         jija_dependencys = list(meta.find_undeclared_variables(page_variables))
@@ -96,6 +121,8 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
 
         page_id = f"{lang}{slug}"
 
+        create_at, last_update = self.get_git_file_dates(str(path))
+
         page_row = pages_db.Page(
             id=page_id,
             slug=slug,
@@ -109,6 +136,8 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
             url=page_url,
             save_as=str(page_save_as),
             path=page_path,
+            create_at=create_at,
+            last_update=last_update,
         )
 
         with Session(self.db_engine) as session:

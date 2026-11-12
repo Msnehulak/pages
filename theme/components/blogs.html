@@ -1,0 +1,53 @@
+{# theme/components/blogs.html #}
+
+{%- macro render_blog(page, lang="en", style="list") -%}
+  {%- set read_more = {"cs": "Číst dál", "en": "Read more"}.get(lang, "Read more") -%}
+  {%- set title_class = "text-xl" if style == "grid" else "text-2xl" -%}
+
+  <a href="/{{ page.path }}"
+     class="blog-card not-prose group block rounded-2xl bg-dark-500 hover:bg-dark-400 transition duration-300 no-underline! overflow-hidden"
+     data-slug="{{ page.slug }}">
+    <article class="p-5 flex flex-col gap-2">
+      <div class="flex items-start justify-between gap-4">
+        <h2 class="m-0 font-bold text-white group-hover:text-brand-400 transition {{ title_class }}">
+          {{ page.title }}
+        </h2>
+
+        {%- if page.create_at and page.create_at.unix -%}
+          <time class="shrink-0 text-xs text-gray-400"
+                datetime="{{ page.create_at.web }}">
+            {{ page.create_at.time }}
+          </time>
+        {%- endif -%}
+      </div>
+
+      {%- if page.description -%}
+        <p class="m-0 text-sm text-gray-300">{{ page.description }}</p>
+      {%- endif -%}
+
+      <span class="mt-1 text-sm font-bold text-brand-400">{{ read_more }} →</span>
+    </article>
+  </a>
+{%- endmacro -%}
+
+{# --- seznam blogových příspěvků --- #}
+{%- macro render_blogs(pages, lang="en", style="list") -%}
+  {%- set empty_text = {"cs": "Zatím žádné články.", "en": "No posts yet."}.get(lang, "No posts yet.") -%}
+  {%- set posts = pages | selectattr("lang", "equalto", lang) | list -%}
+
+  {%- if posts -%}
+    {%- if style == "grid" -%}
+      {%- set wrapper_class = "grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-4" -%}
+    {%- else -%}
+      {%- set wrapper_class = "flex flex-col gap-4" -%}
+    {%- endif -%}
+
+    <div class="blog-list not-prose {{ wrapper_class }}" data-style="{{ style }}">
+      {%- for page in posts -%}
+        {{- render_blog(page, lang=lang, style=style) -}}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="blog-list__empty not-prose text-gray-400">{{ empty_text }}</p>
+  {%- endif -%}
+{%- endmacro -%}

@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from sqlmodel import Session, create_engine, select
 
 from . import pages_db
-from .modules import social_link, yt_iframe
+from .modules import blog_builder, social_link, yt_iframe
 
 root_dir = Path(__file__).parent.parent.resolve()
 theme_dir = root_dir / "theme"
@@ -28,6 +28,7 @@ class PagesBuilder:
         self.content_env = Environment(autoescape=False)
 
     def main(self):
+        self.find_blogs()
         with Session(self.db_engine) as session:
             pages = session.exec(select(pages_db.Page)).all()
 
@@ -57,6 +58,14 @@ class PagesBuilder:
             "yt": {
                 "video": partial(yt_iframe.yt_iframe, lang=page.lang),
             },
+            "blog": {
+                "list": partial(
+                    blog_builder.get_blogs,
+                    pages=self.blog_pages,
+                    lang=page.lang,
+                ),
+            },
+            "blog_pages": self.blog_pages,
         }
         jv_html = {
             **jv_global,
@@ -77,6 +86,16 @@ class PagesBuilder:
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(html, encoding="utf-8")
         logging.info(f"Build page {page.slug}")
+
+    def find_blogs(self):
+        self.blog_pages = []
+
+        with Session(self.db_engine) as session:
+            pages = session.exec(select(pages_db.Page)).all()
+
+            for page in pages:
+                if page.category == "blog":
+                    self.blog_pages.append(page)
 
     def load_jinja_values(self):
         variabls = {}

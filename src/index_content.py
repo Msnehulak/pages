@@ -1,8 +1,10 @@
+import hashlib
 import logging
 import os
 import re
 import subprocess
-from datetime import datetime
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 import frontmatter
@@ -26,9 +28,18 @@ content_dir = root_dir / "content"
 output_dir = root_dir / "output"
 
 
+def get_sha256(filepath):
+    with open(filepath, "rb") as f:
+        return hashlib.file_digest(f, "sha256").hexdigest()
+
+
 class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro třídy)
     def __init__(self) -> None:  # Opraveno: None s velkým N
-        self.index_func = {".md": self.index_mark_down}
+        self.index_func = {
+            ".md": self.index_mark_down,
+            ".png": self.index_img,
+            ".svg": self.index_svg,
+        }
         self.db_engine = create_engine("sqlite:///ssg.db")
         self.jinja2_env = Environment()
         self.main()
@@ -70,20 +81,41 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
 
     @staticmethod
     def get_git_file_dates(file_path):
-        cmd_created = [
-            "git",
-            "log",
-            "--follow",
-            "--format=%at",
-            "--",
-            file_path,
-        ]
+        try:
+            cmd_created = [
+                "git",
+                "log",
+                "--follow",
+                "--format=%at",
+                "--",
+                file_path,
+            ]
+            res_created = subprocess.run(
+                cmd_created, capture_output=True, text=True, check=True
+            )
+            time_stamps = res_created.stdout.splitlines()
 
-        res_created = subprocess.run(cmd_created, capture_output=True, text=True)
-        time_stamps = res_created.stdout.splitlines()
+            if not time_stamps:
+                raise ValueError("git log returned no timestamps")
 
-        create_at = datetime.fromtimestamp(int(time_stamps[-1])).strftime("%Y %m.%d")
-        last_update = datetime.fromtimestamp(int(time_stamps[0])).strftime("%Y %m.%d")
+            create_at_s = int(time_stamps[-1])
+            last_update_s = int(time_stamps[0])
+        except Exception:
+            create_at_s = int(time.time())
+            last_update_s = int(time.time())
+
+        def _make(ts: int) -> dict:
+            dt = datetime.fromtimestamp(ts, tz=timezone.utc)
+            return {
+                "unix": ts,  # 1700000000
+                "web": dt.isoformat(timespec="seconds"),  # "2023-11-14T22:13:20+00:00"
+                "time": dt.strftime(
+                    "%Y-%m-%d %H:%M:%S UTC"
+                ),  # "2023-11-14 22:13:20 UTC"
+            }
+
+        create_at = _make(create_at_s)
+        last_update = _make(last_update_s)
 
         return create_at, last_update
 
@@ -130,6 +162,7 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
             lang=lang,
             title=title,
             description=description,
+            category=page.metadata.get("category", None),
             jija_dependencys=jija_dependencys,
             md_link_dependencys=md_link_deps,
             md_source_dependencys=md_source_deps,
@@ -144,3 +177,27 @@ class IndexContent:  # Opraveno: velká počáteční písmena (konvence pro tř
             session.add(page_row)
             session.commit()
             logging.info(f"Indexing as md '{slug}' is corect!")
+
+    def index_img(self, path: Path):
+        img_path = str(path)
+
+        img_id = get_sha256(path)
+
+        create_at, last_update = 10, 10  # self.get_git_file_dates(str(path))
+
+        img_row = pages_db.Images(
+            id=img_id,
+            suffix=path.suffix,
+            stem=path.stem,
+            create_at=create_at,
+            last_update=last_update,
+            file_path=img_path,
+        )
+
+        with Session(self.db_engine) as session:
+            session.add(img_row)
+            session.commit()
+            logging.info(f"Indexing as md '{path.name}' is corect!")
+
+    def index_svg(self, path: Path):
+        pass

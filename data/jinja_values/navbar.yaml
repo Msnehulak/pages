@@ -16,5 +16,9 @@ nav:
     trans:
       cs: "Strom stránek"
       en: "Link Tree"
+  - link: "/article/"
+    trans:
+      cs: "Články"
+      en: "Articles"
 
 
